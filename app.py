@@ -50,10 +50,11 @@ if uploaded_file is not None:
         st.subheader("Hasil RKM")
         st.dataframe(rkm)
 
-        st.subheader("Visualisasi Jumlah Keluhan per Instansi")
-        st.bar_chart(rkm.set_index('Instansi')['Jumlah'])
+        st.subheader("Visualisasi Jumlah Keluhan per Instansi (Top 5)")
+        top5_rkm = rkm.nlargest(5, 'Jumlah') 
+        st.bar_chart(top5_rkm.set_index('Instansi')['Jumlah'])
 
-        st.subheader("Jumlah Keluhan per Channel")
+        st.subheader("Jumlah Keluhan berdasarkan Kategori")
         st.dataframe(kategori)
 
         # Tombol download untuk hasil rkm

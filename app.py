@@ -22,6 +22,8 @@ def AUTO_RKM(data):
     rkm['Topik'] = rkm['Instansi'].apply(
         lambda x: list(set(data_selesai[data_selesai['Instansi'] == x]['Topik']))
     )
+    rkm['Topik'] = rkm['Topik'].apply(lambda x: ', '.join(x))
+    
     rkm['Jumlah'] = rkm['Instansi'].apply(
         lambda x: len(data_selesai[data_selesai['Instansi'] == x])
     )
@@ -39,6 +41,11 @@ def AUTO_RKM(data):
 
 
 st.title("Analisis RKM dari File Excel")
+st.markdown("""
+✅ **Pastikan file memenuhi kriteria berikut:**
+- 📄 Format file: `.xlsx`
+- 📊 Kolom wajib: `Instansi`, `Topik`, `Channel`, `Status`
+""")
 
 uploaded_file = st.file_uploader("Upload file Excel (.xlsx)", type=["xlsx"])
 

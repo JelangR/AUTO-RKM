@@ -40,7 +40,7 @@ def AUTO_RKM(data):
     return rkm, kategori_keluhan
 
 
-st.title("Analisis RKM dari File Excel")
+st.title("AUTO-RKM")
 st.markdown("""
 ✅ **Pastikan file memenuhi kriteria berikut:**
 - 📄 Format file: `.xlsx`

@@ -59,7 +59,8 @@ if uploaded_file is not None:
 
         st.subheader("Visualisasi Jumlah Keluhan per Instansi (Top 5)")
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
-        st.bar_chart(top5_rkm.set_index('Instansi')['Jumlah'])
+        top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)
+        st.bar_chart(top5_rkm_sorted['Jumlah'], use_container_width=True)
 
         st.subheader("Jumlah Keluhan berdasarkan Kategori")
         st.dataframe(kategori)

@@ -92,28 +92,48 @@ if uploaded_file is not None:
 
         st.header("Beberapa Visualisasi Data")
         st.subheader("Jumlah Keluhan Masyarakat berdasarkan Media")
-        chart = alt.Chart(kategori).mark_bar(
+        import altair as alt
+
+        # Grafik batang
+        bars = alt.Chart(kategori).mark_bar(
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
-            ).encode(
-                x=alt.X('Channel:N',sort='-y', title='Jenis Media'),
-                y=alt.Y('Jumlah:Q',title='Jumlah'),
-                color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
-                tooltip=['Channel', 'Jumlah']
-            ).properties(
-                width=600,
-                height=400
-            ).configure_axis(
-                labelFontSize=10,
-                titleFontSize=14
-            ).configure_title(
-                fontSize=18,
-                anchor='start',
-                color='gray'
-            ).configure_axisX(
+        ).encode(
+            x=alt.X('Channel:N', sort='-y', title='Jenis Media'),
+            y=alt.Y('Jumlah:Q', title='Jumlah'),
+            color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
+            tooltip=['Channel', 'Jumlah']
+        )
+
+        # jumlah kategori
+        text = alt.Chart(kategori).mark_text(
+            align='center',
+            baseline='bottom',
+            dy=-5,
+            fontSize=12
+        ).encode(
+            x='Channel:N',
+            y='Jumlah:Q',
+            text='Jumlah:Q'
+        )
+
+        chart = (bars + text).properties(
+            width=600,
+            height=400,
+            title='Jumlah Keluhan Berdasarkan Media'
+        ).configure_axis(
+            labelFontSize=12,
+            titleFontSize=14
+        ).configure_title(
+            fontSize=18,
+            anchor='start',
+            color='gray'
+        ).configure_axisX(
                 labelLimit=0 
-            )
+        )
+        
         st.altair_chart(chart, use_container_width=True)
+
 
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
         top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)

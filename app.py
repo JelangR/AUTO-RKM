@@ -106,8 +106,7 @@ if uploaded_file is not None:
             ).configure_axis(
                 labelFontSize=10,
                 titleFontSize=14,
-                labelAngle=45,
-                labelAlign='left'
+                labelAngle=45
             ).configure_title(
                 fontSize=18,
                 anchor='start',

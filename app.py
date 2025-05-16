@@ -1,4 +1,5 @@
 import streamlit as st
+import altair as alt
 import pandas as pd
 import time
 from io import BytesIO
@@ -58,14 +59,14 @@ if uploaded_file is not None:
         # Progres bar
         with st.spinner('Sedang memproses...'):
         # Simulasi proses berat
-            time.sleep(3)
+            time.sleep(2)
 
         st.success('Proses selesai!')
 
-        st.subheader("Hasil RKM")
+        st.header("Hasil RKM")
         st.dataframe(rkm)
 
-        st.subheader("Jumlah Keluhan berdasarkan Kategori")
+        st.header("Jumlah Keluhan berdasarkan Kategori")
         st.dataframe(kategori)
 
         col1, col2 = st.columns(2)
@@ -89,7 +90,28 @@ if uploaded_file is not None:
                 mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
 
-        st.subheader("Visualisasi Jumlah Keluhan per Instansi (Top 5)")
+        st.header("Beberapa Visualisasi Data")
+        st.subheader("Jumlah Keluhan Masyarakat berdasarkan Media")
+        chart = alt.Chart(kategori).mark_bar(
+            cornerRadiusTopLeft=5,
+            cornerRadiusTopRight=5
+            ).encode(
+                x=alt.X('Media:N', sort='-y', title='Jenis Media'),
+                y=alt.Y('Jumlah:Q', title='Jumlah'),
+                color=alt.Color('Media:N', legend=None, scale=alt.Scale(scheme='category10')),
+                tooltip=['Media', 'Jumlah']
+            ).properties(
+                width=600,
+                height=400
+            ).configure_axis(
+                labelFontSize=12,
+                titleFontSize=14
+            ).configure_title(
+                fontSize=18,
+                anchor='start',
+                color='gray'
+            )
+
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
         top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)
         st.bar_chart(top5_rkm_sorted['Jumlah'], use_container_width=True)

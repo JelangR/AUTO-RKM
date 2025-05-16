@@ -102,7 +102,7 @@ if uploaded_file is not None:
                 tooltip=['Channel', 'Jumlah']
             ).properties(
                 width=600,
-                height=600
+                height=400
             ).configure_axis(
                 labelFontSize=10,
                 titleFontSize=14
@@ -110,6 +110,8 @@ if uploaded_file is not None:
                 fontSize=18,
                 anchor='start',
                 color='gray'
+            ).configure_axisX(
+                labelLimit=0 
             )
         st.altair_chart(chart, use_container_width=True)
 

@@ -42,42 +42,42 @@ def AUTO_RKM(data):
     return rkm, kategori_keluhan
 
 def vis_kecamatan(data):
-    required_cols = {'Kecamatan','Status'}
+    required_cols = {'Kategori','Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
     
-    data_kecamatan = data[list(required_cols)]
-    rkm_kecamatan = pd.DataFrame()
-    selesai = data_kecamatan[data_kecamatan['Status'] == 'Selesai']
+    data_kategori = data[list(required_cols)]
+    rkm_kategori = pd.DataFrame()
+    selesai_kel = data_kategori[data_kategori['Status'] == 'Selesai']
 
-    rkm_kecamatan['Jumlah'] = selesai['Kecamatan'].apply(
-        lambda x: len(selesai[selesai['Kecamatan'] == x])
+    rkm_kategori['Jumlah'] = selesai_kel['Kategori'].apply(
+        lambda x: len(selesai_kel[selesai_kel['Kategori'] == x])
     )
-    rkm_kecamatan = selesai['Kecamatan'].value_counts().reset_index()
-    rkm_kecamatan.columns = ['Kecamatan', 'Jumlah']
+    rkm_kategori = selesai_kel['Kategori'].value_counts().reset_index()
+    rkm_kategori.columns = ['Kategori', 'Jumlah']
 
-    rkm_kecamatan = rkm_kecamatan.sort_values(by='Jumlah', ascending=False).head(5)
+    rkm_kategori = rkm_kategori.sort_values(by='Jumlah', ascending=False).head(5)
 
     # Grafik batang
-    bars_kecamatan = alt.Chart(rkm_kecamatan).mark_bar(
+    bars_kecamatan = alt.Chart(rkm_kategori).mark_bar(
         cornerRadiusTopLeft=5,
         cornerRadiusTopRight=5
     ).encode(
-        x=alt.X('Kecamatan:N', sort='-y', title='Kecamatan'),
+        x=alt.X('Kategori:N', sort='-y', title='Kategori'),
         y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
-        color=alt.Color('Kecamatan:N', legend=None, scale=alt.Scale(scheme='category20')),
-        tooltip=['Kecamatan', 'Jumlah']
+        color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category20')),
+        tooltip=['Kategori', 'Jumlah']
     )
 
     # Label jumlah
-    text_kecamatan = alt.Chart(rkm_kecamatan).mark_text(
+    text_kecamatan = alt.Chart(rkm_kategori).mark_text(
         align='center',
         baseline='bottom',
         dy=-5,
         fontSize=12,
         color='white'
     ).encode(
-        x=alt.X('Kecamatan:N', sort='-y'),
+        x=alt.X('Kategori:N', sort='-y'),
         y='Jumlah:Q',
         text='Jumlah:Q'
     )
@@ -99,6 +99,89 @@ def vis_kecamatan(data):
     )
     st.altair_chart(chart_kecamatan, use_container_width=True)
 
+def vis_kelurahan(data):
+    required_cols = {'Kategori','Status'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+    
+    data_kategori = data[list(required_cols)]
+    rkm_kategori = pd.DataFrame()
+    selesai_kel = data_kategori[data_kategori['Status'] == 'Selesai']
+
+    rkm_kategori['Jumlah'] = selesai_kel['Kategori'].apply(
+        lambda x: len(selesai_kel[selesai_kel['Kategori'] == x])
+    )
+    rkm_kategori = selesai_kel['Kategori'].value_counts().reset_index()
+    rkm_kategori.columns = ['Kategori', 'Jumlah']
+
+    rkm_kategori = rkm_kategori.sort_values(by='Jumlah', ascending=False).head(5)
+
+    # Grafik batang
+    bars_kelurahan = alt.Chart(rkm_kategori).mark_bar(
+        cornerRadiusTopLeft=5,
+        cornerRadiusTopRight=5
+    ).encode(
+        x=alt.X('Kategori:N', sort='-y', title='Kategori'),
+        y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
+        color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category20')),
+        tooltip=['Kategori', 'Jumlah']
+    )
+
+    # Label jumlah
+    text_kelurahan = alt.Chart(rkm_kategori).mark_text(
+        align='center',
+        baseline='bottom',
+        dy=-5,
+        fontSize=12,
+        color='white'
+    ).encode(
+        x=alt.X('Kategori:N', sort='-y'),
+        y='Jumlah:Q',
+        text='Jumlah:Q'
+    )
+
+    # Gabungkan grafik batang dan label
+    chart_kelurahan = (bars_kelurahan + text_kelurahan).properties(
+        width=700,
+        height=400
+    ).configure_axis(
+        labelFontSize=12,
+        titleFontSize=14
+    ).configure_title(
+        fontSize=18,
+        anchor='start',
+        color='gray'
+    ).configure_axisX(
+        labelLimit=0,
+        labelAngle=45 
+    )
+    st.altair_chart(chart_kelurahan, use_container_width=True)
+
+def persen_kategori(data):
+    required_cols = {'Kategori','Status'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+    
+    data_kategori = data[list(required_cols)]
+    rkm_kategori = pd.DataFrame()
+    selesai_kel = data_kategori[data_kategori['Status'] == 'Selesai']
+
+    rkm_kategori['Jumlah'] = selesai_kel['Kategori'].apply(
+        lambda x: len(selesai_kel[selesai_kel['Kategori'] == x])
+    )
+    rkm_kategori = selesai_kel['Kategori'].value_counts().reset_index()
+    rkm_kategori.columns = ['Kategori', 'Jumlah']
+
+    pie = alt.Chart(rkm_kategori).mark_arc(innerRadius=50).encode(
+    theta=alt.Theta(field="Jumlah", type="quantitative"),
+    color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
+    tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
+    ).properties(
+    width=400,
+    height=400,
+    )
+    st.altair_chart(pie, use_container_width=True)
+
 st.title("AUTO-RKM")
 st.markdown("""
 **Pastikan file memenuhi kriteria berikut:**
@@ -118,7 +201,7 @@ if uploaded_file is not None:
         # Simulasi proses berat
             time.sleep(2)
 
-        st.success('Proses selesai!')
+        st.success('Proses selesai_kel!')
 
         st.header("Hasil RKM")
         st.dataframe(rkm)
@@ -191,8 +274,14 @@ if uploaded_file is not None:
         st.altair_chart(chart, use_container_width=True)
 
         #Visualisasi Kecamatab
-        st.subheader("5 Kecamatan dengan Keluhan Masyarakat Terbanyak")
+        st.subheader("5 Kategori dengan Keluhan Masyarakat Terbanyak")
         vis_kecamatan(data)
+
+        #Visualisasi Kelurahan
+        vis_kelurahan(data)
+
+        #Visualisasi Kategori
+        persen_kategori(data)
         
 
     except ValueError as ve:

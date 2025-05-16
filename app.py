@@ -42,7 +42,7 @@ def AUTO_RKM(data):
     return rkm, kategori_keluhan
 
 def vis_kecamatan(data):
-    required_cols = {'Kecamatan', 'Instansi','Status'}
+    required_cols = {'Kecamatan','Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
 

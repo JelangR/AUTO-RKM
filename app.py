@@ -136,8 +136,8 @@ if uploaded_file is not None:
         # Visualisasi Kecamatan
         rkm_kecamatan = rkm[rkm['Instansi'].str.startswith('Kecamatan')]
         if not rkm_kecamatan.empty:
-            rkm_kecamatan = rkm_kecamatan.sort_values(by='Jumlah', ascending=False)
-            st.subheader("Jumlah Keluhan oleh Instansi dengan Awalan 'Kecamatan'")
+            rkm_kecamatan = rkm_kecamatan.sort_values(by='Jumlah', ascending=False).head(5)
+            st.subheader("5 Kecamatan dengan Keluhan Masyarakat Terbanyak")
 
             # Grafik batang
             bars_kecamatan = alt.Chart(rkm_kecamatan).mark_bar(

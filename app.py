@@ -107,7 +107,7 @@ if uploaded_file is not None:
                 labelFontSize=10,
                 titleFontSize=14,
                 labelAngle=45,
-                labelAlign='right'
+                labelAlign='left'
             ).configure_title(
                 fontSize=18,
                 anchor='start',

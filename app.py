@@ -99,8 +99,8 @@ if uploaded_file is not None:
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
         ).encode(
-            x=alt.X('Channel:N', title='Jenis Media'),
-            y=alt.Y('Jumlah:Q', sort='-y', title='Jumlah'),
+            x=alt.X('Channel:N', sort='-y', title='Jenis Media'),
+            y=alt.Y('Jumlah:Q', title='Jumlah'),
             color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
             tooltip=['Channel', 'Jumlah']
         )
@@ -113,7 +113,7 @@ if uploaded_file is not None:
             fontSize=12,
             color='white'
         ).encode(
-            x='Channel:N',
+            x=alt.X('Channel:N', sort='-y'),
             y='Jumlah:Q',
             text='Jumlah:Q'
         )

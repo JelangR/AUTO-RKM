@@ -45,10 +45,14 @@ def vis_kecamatan(data):
     required_cols = {'Kecamatan','Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
-
+    
     data_kecamatan = data[list(required_cols)]
+    rkm_kecamatan = pd.DataFrame()
     selesai = data_kecamatan[data_kecamatan['Status'] == 'Selesai']
 
+    rkm_kecamatan['Jumlah'] = selesai['Kecamatan'].apply(
+        lambda x: len(selesai[selesai['Kecamatan'] == x])
+    )
     rkm_kecamatan = selesai['Kecamatan'].value_counts().reset_index()
     rkm_kecamatan.columns = ['Kecamatan', 'Jumlah']
 
@@ -59,10 +63,10 @@ def vis_kecamatan(data):
         cornerRadiusTopLeft=5,
         cornerRadiusTopRight=5
     ).encode(
-        x=alt.X('Instansi:N', sort='-y', title='Kecamatan'),
+        x=alt.X('Kecamatan:N', sort='-y', title='Kecamatan'),
         y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
-        color=alt.Color('Instansi:N', legend=None, scale=alt.Scale(scheme='category20')),
-        tooltip=['Instansi', 'Jumlah']
+        color=alt.Color('Kecamatan:N', legend=None, scale=alt.Scale(scheme='category20')),
+        tooltip=['Kecamatan', 'Jumlah']
     )
 
     # Label jumlah
@@ -73,7 +77,7 @@ def vis_kecamatan(data):
         fontSize=12,
         color='white'
     ).encode(
-        x=alt.X('Instansi:N', sort='-y'),
+        x=alt.X('Kecamatan:N', sort='-y'),
         y='Jumlah:Q',
         text='Jumlah:Q'
     )

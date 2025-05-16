@@ -96,8 +96,8 @@ if uploaded_file is not None:
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
             ).encode(
-                x=alt.X('Media:N', sort='-y', title='Jenis Media'),
-                y=alt.Y('Jumlah:Q', title='Jumlah'),
+                x=alt.X(sort='-y', title='Jenis Media'),
+                y=alt.Y(title='Jumlah'),
                 color=alt.Color('Media:N', legend=None, scale=alt.Scale(scheme='category10')),
                 tooltip=['Media', 'Jumlah']
             ).properties(

@@ -92,7 +92,7 @@ if uploaded_file is not None:
 
         st.header("Beberapa Visualisasi Data")
         st.subheader("Jumlah Keluhan Masyarakat berdasarkan Media")
-        chart = alt.Chart(kategori).mark_bar(
+        chart = alt.Chart(kategori_keluhan).mark_bar(
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
             ).encode(

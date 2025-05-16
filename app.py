@@ -49,9 +49,8 @@ def vis_kecamatan(data):
     data_kecamatan = data[list(required_cols)]
     selesai = data_kecamatan[data_kecamatan['Status'] == 'Selesai']
 
-    rkm_kecamatan = selesai[selesai['Instansi'].str.startswith('Kecamatan')]
-    rkm_kecamatan = rkm_kecamatan['Instansi'].value_counts().reset_index()
-    rkm_kecamatan.columns = ['Instansi', 'Jumlah']
+    rkm_kecamatan = selesai['Kecamatan'].value_counts().reset_index()
+    rkm_kecamatan.columns = ['Kecamatan', 'Jumlah']
 
     rkm_kecamatan = rkm_kecamatan.sort_values(by='Jumlah', ascending=False).head(5)
 

@@ -92,9 +92,9 @@ if uploaded_file is not None:
 
         st.header("Beberapa Visualisasi Data")
         st.subheader("Jumlah Keluhan Masyarakat berdasarkan Media")
-        import altair as alt
-
+        
         # Grafik batang
+        kategori = kategori.sort_values(by='Jumlah', ascending=False)
         bars = alt.Chart(kategori).mark_bar(
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5

@@ -274,13 +274,15 @@ if uploaded_file is not None:
         st.altair_chart(chart, use_container_width=True)
 
         #Visualisasi Kecamatab
-        st.subheader("5 Kategori dengan Keluhan Masyarakat Terbanyak")
+        st.subheader("5 Kecamatan dengan Keluhan Masyarakat Terbanyak")
         vis_kecamatan(data)
 
         #Visualisasi Kelurahan
+        st.subheader("5 Kelurahan dengan Keluhan Masyarakat Terbanyak")
         vis_kelurahan(data)
 
         #Visualisasi Kategori
+        st.subheader("Persentase Jenis Kategori")
         persen_kategori(data)
         
 

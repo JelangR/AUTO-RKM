@@ -54,6 +54,9 @@ if uploaded_file is not None:
         data = pd.read_excel(uploaded_file)
         rkm, kategori = AUTO_RKM(data)
 
+        # Progres bar
+        st.progress(10)
+        
         st.subheader("Hasil RKM")
         st.dataframe(rkm)
 
@@ -80,6 +83,7 @@ if uploaded_file is not None:
                 file_name='kategori_keluhan.xlsx',
                 mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
             )
+
         st.subheader("Visualisasi Jumlah Keluhan per Instansi (Top 5)")
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
         top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)

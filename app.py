@@ -100,42 +100,42 @@ def vis_kecamatan(data):
     st.altair_chart(chart_kecamatan, use_container_width=True)
 
 def vis_kelurahan(data):
-    required_cols = {'Kategori','Status'}
+    required_cols = {'Kelurahan','Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
     
-    data_kategori = data[list(required_cols)]
-    rkm_kategori = pd.DataFrame()
-    selesai_kel = data_kategori[data_kategori['Status'] == 'Selesai']
+    data_kelurahan = data[list(required_cols)]
+    rkm_kelurahan = pd.DataFrame()
+    selesai_kel = data_kelurahan[data_kelurahan['Status'] == 'Selesai']
 
-    rkm_kategori['Jumlah'] = selesai_kel['Kategori'].apply(
-        lambda x: len(selesai_kel[selesai_kel['Kategori'] == x])
+    rkm_kelurahan['Jumlah'] = selesai_kel['Kelurahan'].apply(
+        lambda x: len(selesai_kel[selesai_kel['Kelurahan'] == x])
     )
-    rkm_kategori = selesai_kel['Kategori'].value_counts().reset_index()
-    rkm_kategori.columns = ['Kategori', 'Jumlah']
+    rkm_kelurahan = selesai_kel['Kelurahan'].value_counts().reset_index()
+    rkm_kelurahan.columns = ['Kelurahan', 'Jumlah']
 
-    rkm_kategori = rkm_kategori.sort_values(by='Jumlah', ascending=False).head(5)
+    rkm_kelurahan = rkm_kelurahan.sort_values(by='Jumlah', ascending=False).head(5)
 
     # Grafik batang
-    bars_kelurahan = alt.Chart(rkm_kategori).mark_bar(
+    bars_kelurahan = alt.Chart(rkm_kelurahan).mark_bar(
         cornerRadiusTopLeft=5,
         cornerRadiusTopRight=5
     ).encode(
-        x=alt.X('Kategori:N', sort='-y', title='Kategori'),
+        x=alt.X('Kelurahan:N', sort='-y', title='Kelurahan'),
         y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
-        color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category20')),
-        tooltip=['Kategori', 'Jumlah']
+        color=alt.Color('Kelurahan:N', legend=None, scale=alt.Scale(scheme='category20')),
+        tooltip=['Kelurahan', 'Jumlah']
     )
 
     # Label jumlah
-    text_kelurahan = alt.Chart(rkm_kategori).mark_text(
+    text_kelurahan = alt.Chart(rkm_kelurahan).mark_text(
         align='center',
         baseline='bottom',
         dy=-5,
         fontSize=12,
         color='white'
     ).encode(
-        x=alt.X('Kategori:N', sort='-y'),
+        x=alt.X('Kelurahan:N', sort='-y'),
         y='Jumlah:Q',
         text='Jumlah:Q'
     )
@@ -164,12 +164,12 @@ def persen_kategori(data):
     
     data_kategori = data[list(required_cols)]
     rkm_kategori = pd.DataFrame()
-    selesai_kel = data_kategori[data_kategori['Status'] == 'Selesai']
+    selesai_persen = data_kategori[data_kategori['Status'] == 'Selesai']
 
-    rkm_kategori['Jumlah'] = selesai_kel['Kategori'].apply(
-        lambda x: len(selesai_kel[selesai_kel['Kategori'] == x])
+    rkm_kategori['Jumlah'] = selesai_persen['Kategori'].apply(
+        lambda x: len(selesai_persen[selesai_persen['Kategori'] == x])
     )
-    rkm_kategori = selesai_kel['Kategori'].value_counts().reset_index()
+    rkm_kategori = selesai_persen['Kategori'].value_counts().reset_index()
     rkm_kategori.columns = ['Kategori', 'Jumlah']
 
     pie = alt.Chart(rkm_kategori).mark_arc(innerRadius=50).encode(

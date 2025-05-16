@@ -59,11 +59,11 @@ if uploaded_file is not None:
 
         st.subheader("Jumlah Keluhan berdasarkan Kategori")
         st.dataframe(kategori)
-        
+
         col1, col2 = st.columns(2)
         # Tombol download untuk hasil rkm
         with col1:
-            xcel_rkm = to_excel(rkm)
+            excel_rkm = to_excel(rkm)
             st.download_button(
                 label="Download Hasil RKM (.xlsx)",
                 data=excel_rkm,

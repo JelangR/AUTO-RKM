@@ -92,7 +92,7 @@ if uploaded_file is not None:
 
         st.header("Beberapa Visualisasi Data")
         st.subheader("Jumlah Keluhan Masyarakat berdasarkan Media")
-        kategori_keluhan = data_selesai['Channel'].value_counts().reset_index()
+        kategori_keluhan = rkm['Channel'].value_counts().reset_index()
         kategori_keluhan.columns = ['Channel', 'Jumlah']
         chart = alt.Chart(kategori_keluhan).mark_bar(
             cornerRadiusTopLeft=5,

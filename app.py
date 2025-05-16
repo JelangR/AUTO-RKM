@@ -99,8 +99,8 @@ if uploaded_file is not None:
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
         ).encode(
-            x=alt.X('Channel:N', sort='-y', title='Jenis Media'),
-            y=alt.Y('Jumlah:Q', title='Jumlah'),
+            x=alt.X('Channel:N', title='Jenis Media'),
+            y=alt.Y('Jumlah:Q', , sort='-y', title='Jumlah'),
             color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
             tooltip=['Channel', 'Jumlah']
         )
@@ -109,8 +109,9 @@ if uploaded_file is not None:
         text = alt.Chart(kategori).mark_text(
             align='center',
             baseline='bottom',
-            dy=5,
-            fontSize=12
+            dy=-5,
+            fontSize=12,
+            color='white'
         ).encode(
             x='Channel:N',
             y='Jumlah:Q',
@@ -120,7 +121,6 @@ if uploaded_file is not None:
         chart = (bars + text).properties(
             width=600,
             height=400,
-            title='Jumlah Keluhan Berdasarkan Media'
         ).configure_axis(
             labelFontSize=12,
             titleFontSize=14
@@ -129,7 +129,7 @@ if uploaded_file is not None:
             anchor='start',
             color='gray'
         ).configure_axisX(
-                labelLimit=0 
+            labelLimit=0 
         )
         
         st.altair_chart(chart, use_container_width=True)

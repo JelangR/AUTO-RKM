@@ -131,16 +131,56 @@ if uploaded_file is not None:
         ).configure_axisX(
             labelLimit=0 
         )
-        
         st.altair_chart(chart, use_container_width=True)
 
+        # Visualisasi Kecamatan
+        rkm_kecamatan = rkm[rkm['Instansi'].str.startswith('Kecamatan')]
+        if not rkm_kecamatan.empty:
+            rkm_kecamatan = rkm_kecamatan.sort_values(by='Jumlah', ascending=False)
+            st.subheader("Jumlah Keluhan oleh Instansi dengan Awalan 'Kecamatan'")
 
-        top5_rkm = rkm.nlargest(5, 'Jumlah') 
-        top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)
-        st.bar_chart(top5_rkm_sorted['Jumlah'], use_container_width=True)
+            # Grafik batang
+            bars_kecamatan = alt.Chart(rkm_kecamatan).mark_bar(
+                cornerRadiusTopLeft=5,
+                cornerRadiusTopRight=5
+            ).encode(
+                x=alt.X('Instansi:N', sort='-y', title='Kecamatan'),
+                y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
+                color=alt.Color('Instansi:N', legend=None, scale=alt.Scale(scheme='category20')),
+                tooltip=['Instansi', 'Jumlah']
+            )
 
-        
+            # Label jumlah
+            text_kecamatan = alt.Chart(rkm_kecamatan).mark_text(
+                align='center',
+                baseline='bottom',
+                dy=-5,
+                fontSize=12,
+                color='white'
+            ).encode(
+                x=alt.X('Instansi:N', sort='-y'),
+                y='Jumlah:Q',
+                text='Jumlah:Q'
+            )
 
+            # Gabungkan grafik batang dan label
+            chart_kecamatan = (bars_kecamatan + text_kecamatan).properties(
+                width=700,
+                height=400
+            ).configure_axis(
+                labelFontSize=12,
+                titleFontSize=14
+            ).configure_title(
+                fontSize=18,
+                anchor='start',
+                color='gray'
+            ).configure_axisX(
+                labelLimit=0,
+                labelAngle=45 
+            )
+            st.altair_chart(chart_kecamatan, use_container_width=True)
+        else:
+            st.info("Tidak ada instansi dengan awalan 'Kecamatan' ditemukan dalam data.")
 
     except ValueError as ve:
         st.error(f"Error: {ve}")

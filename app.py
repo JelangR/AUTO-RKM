@@ -104,7 +104,7 @@ if uploaded_file is not None:
                 width=600,
                 height=400
             ).configure_axis(
-                labelFontSize=10,
+                labelFontSize=12,
                 titleFontSize=14,
                 labelAngle=45
             ).configure_title(

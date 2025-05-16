@@ -58,7 +58,7 @@ if uploaded_file is not None:
         # Progres bar
         with st.spinner('Sedang memproses...'):
         # Simulasi proses berat
-        time.sleep(3)
+            time.sleep(3)
 
         st.success('Proses selesai!')
 

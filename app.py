@@ -97,8 +97,7 @@ if uploaded_file is not None:
             cornerRadiusTopRight=5
             ).encode(
                 x=alt.X(sort='-y', title='Jenis Media'),
-                y=alt.Y(title='Jumlah'),
-                color=alt.Color(legend=None, scale=alt.Scale(scheme='category10')),
+                y=alt.Y(title='Jumlah')
             ).properties(
                 width=600,
                 height=400

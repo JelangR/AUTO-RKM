@@ -102,9 +102,9 @@ if uploaded_file is not None:
                 tooltip=['Channel', 'Jumlah']
             ).properties(
                 width=600,
-                height=400
+                height=600
             ).configure_axis(
-                labelFontSize=8,
+                labelFontSize=10,
                 titleFontSize=14
             ).configure_title(
                 fontSize=18,

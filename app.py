@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import time
 from io import BytesIO
 
 def to_excel(df):
@@ -55,8 +56,12 @@ if uploaded_file is not None:
         rkm, kategori = AUTO_RKM(data)
 
         # Progres bar
-        st.progress(10)
-        
+        with st.spinner('Sedang memproses...'):
+        # Simulasi proses berat
+        time.sleep(3)
+
+        st.success('Proses selesai!')
+
         st.subheader("Hasil RKM")
         st.dataframe(rkm)
 

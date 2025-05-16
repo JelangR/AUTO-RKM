@@ -188,7 +188,7 @@ if uploaded_file is not None:
 
         #Visualisasi Kecamatab
         st.subheader("5 Kecamatan dengan Keluhan Masyarakat Terbanyak")
-        vis_kecamatan(uploaded_file)
+        vis_kecamatan(data)
         
 
     except ValueError as ve:

@@ -111,7 +111,8 @@ if uploaded_file is not None:
                 anchor='start',
                 color='gray'
             )
-
+        st.altair_chart(chart, use_container_width=True)
+        
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
         top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)
         st.bar_chart(top5_rkm_sorted['Jumlah'], use_container_width=True)

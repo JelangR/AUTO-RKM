@@ -42,7 +42,7 @@ def AUTO_RKM(data):
 
 st.title("AUTO-RKM")
 st.markdown("""
-✅ **Pastikan file memenuhi kriteria berikut:**
+**Pastikan file memenuhi kriteria berikut:**
 - 📄 Format file: `.xlsx`
 - 📊 Kolom wajib: `Instansi`, `Topik`, `Channel`, `Status`
 """)
@@ -57,31 +57,36 @@ if uploaded_file is not None:
         st.subheader("Hasil RKM")
         st.dataframe(rkm)
 
+        st.subheader("Jumlah Keluhan berdasarkan Kategori")
+        st.dataframe(kategori)
+        
+        col1, col2 = st.columns(2)
+        # Tombol download untuk hasil rkm
+        with col1:
+            xcel_rkm = to_excel(rkm)
+            st.download_button(
+                label="Download Hasil RKM (.xlsx)",
+                data=excel_rkm,
+                file_name='hasil_rkm.xlsx',
+                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                )
+
+        # Tombol download untuk kategori keluhan
+        with col2:
+            excel_kategori = to_excel(kategori)
+            st.download_button(
+                label="Download Kategori Keluhan (.xlsx)",
+                data=excel_kategori,
+                file_name='kategori_keluhan.xlsx',
+                mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            )
         st.subheader("Visualisasi Jumlah Keluhan per Instansi (Top 5)")
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
         top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)
         st.bar_chart(top5_rkm_sorted['Jumlah'], use_container_width=True)
 
-        st.subheader("Jumlah Keluhan berdasarkan Kategori")
-        st.dataframe(kategori)
+        
 
-        # Tombol download untuk hasil rkm
-        excel_rkm = to_excel(rkm)
-        st.download_button(
-            label="Download Hasil RKM (.xlsx)",
-            data=excel_rkm,
-            file_name='hasil_rkm.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
-
-        # Tombol download untuk kategori keluhan
-        excel_kategori = to_excel(kategori)
-        st.download_button(
-            label="Download Kategori Keluhan (.xlsx)",
-            data=excel_kategori,
-            file_name='kategori_keluhan.xlsx',
-            mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
 
     except ValueError as ve:
         st.error(f"Error: {ve}")

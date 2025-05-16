@@ -109,7 +109,7 @@ if uploaded_file is not None:
         text = alt.Chart(kategori).mark_text(
             align='center',
             baseline='bottom',
-            dy=-5,
+            dy=5,
             fontSize=12
         ).encode(
             x='Channel:N',

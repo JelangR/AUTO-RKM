@@ -92,14 +92,14 @@ if uploaded_file is not None:
 
         st.header("Beberapa Visualisasi Data")
         st.subheader("Jumlah Keluhan Masyarakat berdasarkan Media")
-        kategori_keluhan = rkm['Channel'].value_counts().reset_index()
-        kategori_keluhan.columns = ['Channel', 'Jumlah']
-        chart = alt.Chart(kategori_keluhan).mark_bar(
+        chart = alt.Chart(kategori).mark_bar(
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
             ).encode(
                 x=alt.X(sort='-y', title='Jenis Media'),
-                y=alt.Y(title='Jumlah')
+                y=alt.Y(title='Jumlah'),
+                color=alt.Color('Media:N', legend=None, scale=alt.Scale(scheme='category10')),
+                tooltip=['Media', 'Jumlah']
             ).properties(
                 width=600,
                 height=400
@@ -112,7 +112,7 @@ if uploaded_file is not None:
                 color='gray'
             )
         st.altair_chart(chart, use_container_width=True)
-        
+
         top5_rkm = rkm.nlargest(5, 'Jumlah') 
         top5_rkm_sorted = top5_rkm.set_index('Instansi').sort_values(by='Jumlah', ascending=False)
         st.bar_chart(top5_rkm_sorted['Jumlah'], use_container_width=True)

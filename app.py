@@ -263,7 +263,7 @@ def opd_vis(data):
     top5.columns = ['Instansi', 'Jumlah']
 
     bars = alt.Chart(top5).mark_bar(
-        cornerRadiusTopLeft=4,
+        cornerRadiusBottomRight=4,
         cornerRadiusTopRight=4
     ).encode(
         x=alt.X('Jumlah:Q', title='Jumlah'),

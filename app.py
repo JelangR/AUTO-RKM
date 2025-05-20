@@ -186,7 +186,7 @@ def persen_kategori(data):
         st.altair_chart(pie, use_container_width=True)
     with col2:
         st.markdown("### Keterangan:")
-        st.markdown(table.to_markdown(index=False), unsafe_allow_html=True)
+        st.dataframe(table, use_container_width=True)
 
 def tren_keluhan(data):
     required_cols = {'Tanggal Keluhan','Status','Kategori'}

@@ -247,7 +247,61 @@ def tren_permohonan_info(data):
     )
 
     st.altair_chart(trenInfo_chart, use_container_width=True)
+    
+def opd_vis(data):
+    equired_cols = {'Kategori','Status','Instansi'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+    
+    opd_keluhan = data[list(required_cols)]
+    selesai_opd = opd_keluhan[
+        (opd_keluhan['Status'] == 'Selesai') &
+        (opd_keluhan['Kategori'] == 'Keluhan') &
+        (opd_keluhan['Instansi'].str.startswith('Dinas'))
+    ]
+    top5 = selesai_opd['Instansi'].value_counts().reset_index().head(5)
+    top5.columns = ['Instansi', 'Jumlah']
 
+    bars = alt.Chart(top5).mark_bar(
+        cornerRadiusTopLeft=4,
+        cornerRadiusTopRight=4
+    ).encode(
+        x=alt.X('Jumlah:Q', title='Jumlah'),
+        y=alt.Y('Instansi:N', sort='-x', title='Instansi'),
+        color=alt.Color('Instansi:N', legend=None, scale=alt.Scale(scheme='category10')),
+        tooltip=['Instansi', 'Jumlah']
+    )
+
+    # Tambahkan label jumlah
+    text = alt.Chart(top5).mark_text(
+        align='left',
+        baseline='middle',
+        dx=3,
+        fontSize=11
+    ).encode(
+        x='Jumlah:Q',
+        y=alt.Y('Instansi:N', sort='-x'),
+        text='Jumlah:Q'
+    )
+
+    # Gabungkan dan tampilkan
+    chart = (bars + text).properties(
+        width=700,
+        height=400,
+    ).configure_axis(
+        labelFontSize=12,
+        titleFontSize=14
+    ).configure_title(
+        fontSize=16,
+        anchor='start',
+        color='gray'
+    )
+
+    st.altair_chart(chart, use_container_width=True)
+    
+    
+
+    
 #--------APP
 st.title("AUTO-RKM")
 st.markdown("""
@@ -359,6 +413,10 @@ if uploaded_file is not None:
         #visualisasi tren permohonan informasi
         st.subheader('Jumlah Permohonan Informasi per Hari')
         tren_permohonan_info(data)
+
+        # Visualisasi OPD terbanyak
+        st.subheader('5 OPD Teratas yang Mendapatkan Keluhan')
+        opd_vis(data)
 
     except ValueError as ve:
         st.error(f"Error: {ve}")

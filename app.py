@@ -308,7 +308,7 @@ def opdInfo_vis(data):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
     
     opd_info = data[list(required_cols)]
-    selesai_opdInfo = opd_keluhan[
+    selesai_opdInfo = opd_info[
         (opd_info['Status'] == 'Selesai') &
         (opd_info['Kategori'] == 'Permohonan Informasi') &
         (opd_info['Instansi'].str.startswith('Dinas'))

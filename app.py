@@ -277,7 +277,8 @@ def opd_vis(data):
         align='left',
         baseline='middle',
         dx=3,
-        fontSize=11
+        fontSize=11,
+        color='white'
     ).encode(
         x='Jumlah:Q',
         y=alt.Y('Instansi:N', sort='-x'),
@@ -295,6 +296,8 @@ def opd_vis(data):
         fontSize=16,
         anchor='start',
         color='gray'
+    ).configure_axisY(
+        labelLimit=0
     )
 
     st.altair_chart(chart, use_container_width=True)

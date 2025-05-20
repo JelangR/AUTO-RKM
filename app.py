@@ -158,31 +158,26 @@ def vis_kelurahan(data):
     st.altair_chart(chart_kelurahan, use_container_width=True)
 
 def persen_kategori(data):
-    required_cols = {'Kategori','Status'}
+    required_cols = {'Kategori', 'Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
-    
-    data_kategori = data[list(required_cols)]
-    rkm_kategori = pd.DataFrame()
-    selesai_persen = data_kategori[data_kategori['Status'] == 'Selesai']
 
-    rkm_kategori['Jumlah'] = selesai_persen['Kategori'].apply(
-        lambda x: len(selesai_persen[selesai_persen['Kategori'] == x])
-    )
+
+    selesai_persen = data[data['Status'] == 'Selesai'].copy()
+
     rkm_kategori = selesai_persen['Kategori'].value_counts().reset_index()
     rkm_kategori.columns = ['Kategori', 'Jumlah']
-    rkm_kategori['PersenLabel'] = rkm_kategori['Persentase'].map(lambda x: f"{x:.1f}%")
 
-    #Persentase
     total = rkm_kategori['Jumlah'].sum()
     rkm_kategori['Persentase'] = (rkm_kategori['Jumlah'] / total) * 100
+    rkm_kategori['PersenLabel'] = rkm_kategori['Persentase'].map(lambda x: f"{x:.1f}%")
 
     pie = alt.Chart(rkm_kategori).mark_arc().encode(
-    theta=alt.Theta(field="Jumlah", type="quantitative"),
-    color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
-    tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
+        theta=alt.Theta(field="Jumlah", type="quantitative"),
+        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
+        tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
     )
-
+    #label
     text = alt.Chart(rkm_kategori).mark_text(radius=110, size=12, color='white').encode(
         theta=alt.Theta(field="Jumlah", type="quantitative"),
         text=alt.Text('PersenLabel:N')
@@ -191,6 +186,7 @@ def persen_kategori(data):
         width=400,
         height=400
     )
+
     st.altair_chart(persen_chart, use_container_width=True)
 
 def tren_keluhan(data):
@@ -248,7 +244,7 @@ def tren_permohonan_info(data):
     )
 
     st.altair_chart(trenInfo_chart, use_container_width=True)
-    
+
 #--------APP
 st.title("AUTO-RKM")
 st.markdown("""

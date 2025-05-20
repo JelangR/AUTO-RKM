@@ -267,7 +267,7 @@ def opd_vis(data):
         cornerRadiusTopRight=4
     ).encode(
         x=alt.X('Jumlah:Q',title=None),
-        y=alt.Y('Instansi:N',title=None),
+        y=alt.Y('Instansi:N',title=None, sort='-y'),
         color=alt.Color('Instansi:N', legend=None, scale=alt.Scale(scheme='category10')),
         tooltip=['Instansi', 'Jumlah']
     )
@@ -321,7 +321,7 @@ def opdInfo_vis(data):
         cornerRadiusTopRight=4
     ).encode(
         x=alt.X('Jumlah:Q',title=None),
-        y=alt.Y('Instansi:N',title=None),
+        y=alt.Y('Instansi:N',title=None,sort='-y'),
         color=alt.Color('Instansi:N', legend=None, scale=alt.Scale(scheme='category10')),
         tooltip=['Instansi', 'Jumlah']
     )

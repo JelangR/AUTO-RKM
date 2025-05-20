@@ -249,7 +249,7 @@ def tren_permohonan_info(data):
     st.altair_chart(trenInfo_chart, use_container_width=True)
     
 def opd_vis(data):
-    equired_cols = {'Kategori','Status','Instansi'}
+    required_cols = {'Kategori','Status','Instansi'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
     

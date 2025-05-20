@@ -157,11 +157,11 @@ def vis_kelurahan(data):
     )
     st.altair_chart(chart_kelurahan, use_container_width=True)
 
+
 def persen_kategori(data):
     required_cols = {'Kategori', 'Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
-
 
     selesai_persen = data[data['Status'] == 'Selesai'].copy()
 
@@ -170,21 +170,23 @@ def persen_kategori(data):
 
     total = rkm_kategori['Jumlah'].sum()
     rkm_kategori['Persentase'] = (rkm_kategori['Jumlah'] / total) * 100
-    rkm_kategori['PersenLabel'] = rkm_kategori['Persentase'].map(lambda x: f"{x:.1f}%")
+    rkm_kategori['PersenLabel'] = rkm_kategori.apply(
+        lambda row: f"{row['Kategori']} ({row['Persentase']:.1f}%)", axis=1
+    )
 
-    pie = alt.Chart(rkm_kategori).mark_arc().encode(
+    pie = alt.Chart(rkm_kategori).mark_arc(innerRadius=60).encode(
         theta=alt.Theta(field="Jumlah", type="quantitative"),
-        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
+        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='tableau10')),
         tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
     )
-    #label
-    text = alt.Chart(rkm_kategori).mark_text(radius=110, size=12, color='white').encode(
+    text = alt.Chart(rkm_kategori).mark_text(radius=120, size=12, color='black').encode(
         theta=alt.Theta(field="Jumlah", type="quantitative"),
         text=alt.Text('PersenLabel:N')
     )
     persen_chart = (pie + text).properties(
-        width=400,
-        height=400
+        title='Persentase Keluhan Selesai per Kategori',
+        width=500,
+        height=500
     )
 
     st.altair_chart(persen_chart, use_container_width=True)
@@ -352,6 +354,10 @@ if uploaded_file is not None:
         #Visualisasi tren harian keluhan
         st.subheader("Jumlah Keluhan per Hari")
         tren_keluhan(data)
+
+        #visualisasi tren permohonan informasi
+        st.subheader('Jumlah Permohonan Informasi per Hari')
+        tren_permohonan_info(data)
 
     except ValueError as ve:
         st.error(f"Error: {ve}")

@@ -175,8 +175,7 @@ def persen_kategori(data):
         tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
     ).properties(
         width=300,
-        height=300,
-        title='Distribusi Keluhan Selesai per Kategori'
+        height=300
     )
 
     table = df[['Kategori', 'Jumlah', 'PersenLabel']].rename(columns={'PersenLabel': 'Persentase'})
@@ -270,7 +269,7 @@ if uploaded_file is not None:
         # Simulasi proses berat
             time.sleep(2)
 
-        st.success('Proses selesai_kel!')
+        st.success('Proses selesai!')
 
         st.header("Hasil RKM")
         st.dataframe(rkm)

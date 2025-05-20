@@ -185,7 +185,6 @@ def persen_kategori(data):
     with col1:
         st.altair_chart(pie, use_container_width=True)
     with col2:
-        st.markdown("### Keterangan:")
         st.dataframe(table, use_container_width=True)
 
 def tren_keluhan(data):

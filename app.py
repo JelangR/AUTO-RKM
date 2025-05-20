@@ -88,7 +88,7 @@ def vis_kecamatan(data):
         height=400
     ).configure_axis(
         labelFontSize=12,
-        titleFontSize=14
+        titleFontSize=18
     ).configure_title(
         fontSize=18,
         anchor='start',
@@ -146,7 +146,7 @@ def vis_kelurahan(data):
         height=400
     ).configure_axis(
         labelFontSize=12,
-        titleFontSize=14
+        titleFontSize=18
     ).configure_title(
         fontSize=18,
         anchor='start',
@@ -171,17 +171,85 @@ def persen_kategori(data):
     )
     rkm_kategori = selesai_persen['Kategori'].value_counts().reset_index()
     rkm_kategori.columns = ['Kategori', 'Jumlah']
+    rkm_kategori['PersenLabel'] = rkm_kategori['Persentase'].map(lambda x: f"{x:.1f}%")
 
-    pie = alt.Chart(rkm_kategori).mark_arc(innerRadius=50).encode(
+    #Persentase
+    total = rkm_kategori['Jumlah'].sum()
+    rkm_kategori['Persentase'] = (rkm_kategori['Jumlah'] / total) * 100
+
+    pie = alt.Chart(rkm_kategori).mark_arc().encode(
     theta=alt.Theta(field="Jumlah", type="quantitative"),
     color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
     tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
-    ).properties(
-    width=400,
-    height=400,
     )
-    st.altair_chart(pie, use_container_width=True)
 
+    text = alt.Chart(rkm_kategori).mark_text(radius=110, size=12, color='white').encode(
+        theta=alt.Theta(field="Jumlah", type="quantitative"),
+        text=alt.Text('PersenLabel:N')
+    )
+    persen_chart = (pie + text).properties(
+        width=400,
+        height=400
+    )
+    st.altair_chart(persen_chart, use_container_width=True)
+
+def tren_keluhan(data):
+    required_cols = {'Tanggal Keluhan','Status','Kategori'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+    
+    data_tren = data[list(required_cols)]
+    rkm_tren = pd.DataFrame()
+    selesai_tren = data_tren[data_tren['Status'] == 'Selesai']
+    selesai_tren = data_tren[data_tren['Kategori'] == 'Keluhan']
+
+    rkm_tren['Jumlah'] = selesai_tren['Tanggal Keluhan'].apply(
+        lambda x: len(selesai_tren[selesai_tren['Tanggal Keluhan'] == x])
+    )
+    selesai_tren['Tanggal Keluhan'] = selesai_tren['Tanggal Keluhan'].dt.date
+    rkm_tren = selesai_tren['Tanggal Keluhan'].value_counts().reset_index()
+    rkm_tren.columns = ['Tanggal Keluhan', 'Jumlah']
+
+    tren_chart = alt.Chart(rkm_tren).mark_line(point=True).encode(
+        x=alt.X('Tanggal Keluhan:T', title='Tanggal'),
+        y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
+        tooltip=['Tanggal Keluhan:T', 'Jumlah']
+    ).properties(
+        width=700,
+        height=400
+    )
+
+    st.altair_chart(tren_chart, use_container_width=True)
+
+def tren_permohonan_info(data):
+    required_cols = {'Tanggal Keluhan','Status','Kategori'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+    
+    data_tren_info = data[list(required_cols)]
+    rkm_tren_info = pd.DataFrame()
+    selesai_tren_info = data_tren_info[data_tren_info['Status'] == 'Selesai']
+    selesai_tren_info = data_tren_info[data_tren_info['Kategori'] == 'Permohonan Informasi']
+
+    rkm_tren_info['Jumlah'] = selesai_tren_info['Tanggal Keluhan'].apply(
+        lambda x: len(selesai_tren_info[selesai_tren_info['Tanggal Keluhan'] == x])
+    )
+    selesai_tren_info['Tanggal Keluhan'] = selesai_tren_info['Tanggal Keluhan'].dt.date
+    rkm_tren_info = selesai_tren_info['Tanggal Keluhan'].value_counts().reset_index()
+    rkm_tren_info.columns = ['Tanggal Keluhan', 'Jumlah']
+
+    trenInfo_chart = alt.Chart(rkm_tren_info).mark_line(point=True).encode(
+        x=alt.X('Tanggal Keluhan:T', title='Tanggal'),
+        y=alt.Y('Jumlah:Q', title='Jumlah Permohonan Infomasi'),
+        tooltip=['Tanggal Keluhan:T', 'Jumlah']
+    ).properties(
+        width=700,
+        height=400
+    )
+
+    st.altair_chart(trenInfo_chart, use_container_width=True)
+    
+#--------APP
 st.title("AUTO-RKM")
 st.markdown("""
 **Pastikan file memenuhi kriteria berikut:**
@@ -263,7 +331,7 @@ if uploaded_file is not None:
             height=400,
         ).configure_axis(
             labelFontSize=12,
-            titleFontSize=14
+            titleFontSize=18
         ).configure_title(
             fontSize=18,
             anchor='start',
@@ -285,6 +353,9 @@ if uploaded_file is not None:
         st.subheader("Persentase Jenis Kategori")
         persen_kategori(data)
         
+        #Visualisasi tren harian keluhan
+        st.subheader("Jumlah Keluhan per Hari")
+        tren_keluhan(data)
 
     except ValueError as ve:
         st.error(f"Error: {ve}")

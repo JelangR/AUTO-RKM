@@ -163,33 +163,31 @@ def persen_kategori(data):
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
 
-    selesai_persen = data[data['Status'] == 'Selesai'].copy()
+    selesai = data[data['Status'] == 'Selesai'].copy()
+    df = selesai['Kategori'].value_counts().reset_index()
+    df.columns = ['Kategori', 'Jumlah']
+    df['Persentase'] = (df['Jumlah'] / df['Jumlah'].sum()) * 100
+    df['PersenLabel'] = df['Persentase'].map(lambda x: f"{x:.1f}%")
 
-    rkm_kategori = selesai_persen['Kategori'].value_counts().reset_index()
-    rkm_kategori.columns = ['Kategori', 'Jumlah']
-
-    total = rkm_kategori['Jumlah'].sum()
-    rkm_kategori['Persentase'] = (rkm_kategori['Jumlah'] / total) * 100
-    rkm_kategori['PersenLabel'] = rkm_kategori.apply(
-        lambda row: f"{row['Kategori']} ({row['Persentase']:.1f}%)", axis=1
-    )
-
-    pie = alt.Chart(rkm_kategori).mark_arc(innerRadius=60).encode(
+    pie = alt.Chart(df).mark_arc(innerRadius=50).encode(
         theta=alt.Theta(field="Jumlah", type="quantitative"),
-        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='tableau10')),
+        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
         tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
-    )
-    text = alt.Chart(rkm_kategori).mark_text(radius=120, size=12, color='black').encode(
-        theta=alt.Theta(field="Jumlah", type="quantitative"),
-        text=alt.Text('PersenLabel:N')
-    )
-    persen_chart = (pie + text).properties(
-        title='Persentase Keluhan Selesai per Kategori',
-        width=500,
-        height=500
+    ).properties(
+        width=300,
+        height=300,
+        title='Distribusi Keluhan Selesai per Kategori'
     )
 
-    st.altair_chart(persen_chart, use_container_width=True)
+    table = df[['Kategori', 'Jumlah', 'PersenLabel']].rename(columns={'PersenLabel': 'Persentase'})
+
+    # Tampilkan di Streamlit sebagai dua kolom
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        st.altair_chart(pie, use_container_width=True)
+    with col2:
+        st.markdown("### Keterangan:")
+        st.markdown(table.to_markdown(index=False), unsafe_allow_html=True)
 
 def tren_keluhan(data):
     required_cols = {'Tanggal Keluhan','Status','Kategori'}
@@ -215,8 +213,10 @@ def tren_keluhan(data):
     ).properties(
         width=700,
         height=400
+    ).configure_axisX(
+        labelLimit=0,
+        labelAngle=90
     )
-
     st.altair_chart(tren_chart, use_container_width=True)
 
 def tren_permohonan_info(data):
@@ -243,6 +243,9 @@ def tren_permohonan_info(data):
     ).properties(
         width=700,
         height=400
+    ).configure_axisX(
+        labelLimit=0,
+        labelAngle=90
     )
 
     st.altair_chart(trenInfo_chart, use_container_width=True)

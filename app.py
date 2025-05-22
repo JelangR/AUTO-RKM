@@ -389,8 +389,6 @@ def top5Opd_keluhan_vis(data):
         width=600,
         height=300,
         title=f'Topik Keluhan - {instansi_terpilih}'
-    ).configure_axisY(
-        labelLimit=200
     )
     text = bar.mark_text(
         align='left',
@@ -399,7 +397,9 @@ def top5Opd_keluhan_vis(data):
     ).encode(
     text='Jumlah:Q'
     )
-    chart=bar+text
+    chart= (bar+text).configure_axisY(
+        labelLimit=200
+    )
     st.altair_chart(chart, use_container_width=True)
 
 #--------APP

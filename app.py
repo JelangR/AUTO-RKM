@@ -390,7 +390,7 @@ def top5Opd_keluhan_vis(data):
     height=300,
     title=f'Topik Keluhan - {instansi_terpilih}'
     ).configure_axisY(
-        labelLimit=5,
+        labelLimit=12,
     ).configure_axisX(
         labelLimit=0
     )

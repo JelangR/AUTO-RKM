@@ -393,7 +393,8 @@ def top5Opd_keluhan_vis(data):
     text = bar.mark_text(
         align='left',
         baseline='middle',
-        dx=3
+        dx=5,
+        color='white'
     ).encode(
     text='Jumlah:Q'
     )

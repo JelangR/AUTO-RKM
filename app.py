@@ -393,10 +393,10 @@ def top5Opd_keluhan_vis(data):
     text = bar.mark_text(
         align='left',
         baseline='middle',
-        dx=5,
-        color='white'
+        dx=5
     ).encode(
-    text='Jumlah:Q'
+        text='Jumlah:Q',
+        color='white'
     )
     chart= (bar+text).configure_axisY(
         labelLimit=200

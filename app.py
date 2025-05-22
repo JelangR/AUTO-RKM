@@ -359,7 +359,7 @@ def opdInfo_vis(data):
     st.altair_chart(chart, use_container_width=True)
     
 def top5Opd_keluhan_vis(data):
-    required_cols = {'Kategori','Status','Instansi'}
+    required_cols = {'Kategori','Status','Instansi','Topik'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
     top5Opd = data[list(required_cols)]

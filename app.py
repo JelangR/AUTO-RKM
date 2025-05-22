@@ -378,17 +378,17 @@ def top5Opd_keluhan_vis(data):
     instansi_terpilih = st.selectbox("Pilih Instansi:", top_5_instansi['Instansi'])
 
     data_instansi = filtered[filtered['Instansi'] == instansi_terpilih]
-    topik_count = data_instansi['Topik'].value_counts().reset_index().head(5)
+    topik_count = data_instansi['Topik'].value_counts().reset_index()
     topik_count.columns = ['Topik', 'Jumlah']
 
     chart = alt.Chart(topik_count).mark_bar().encode(
-    x=alt.X('Topik:N', sort='-y', axis=alt.Axis(labelAngle=30), title='Topik'),
-    y=alt.Y('Jumlah:Q', title='Jumlah'),
+    x=alt.X('Jumlah:Q', title='Jumlah'),
+    y=alt.Y('Topik:N', sort='-x', axis=alt.Axis(labelAngle=30), title='Topik'),
     color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='viridis'), legend=None)
     ).properties(
     width=600,
     height=300,
-    title=f'5 Topik Terbanyak - {instansi_terpilih}'
+    title=f'Topik Keluhan - {instansi_terpilih}'
     )
 
     st.altair_chart(chart, use_container_width=True)

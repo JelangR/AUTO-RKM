@@ -65,7 +65,7 @@ def vis_kecamatan(data):
     ).encode(
         x=alt.X('Kategori:N', sort='-y', title=None),
         y=alt.Y('Jumlah:Q', title=None),
-        color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category20')),
+        color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category10')),
         tooltip=['Kategori', 'Jumlah']
     )
 
@@ -123,7 +123,7 @@ def vis_kelurahan(data):
     ).encode(
         x=alt.X('Kelurahan:N', sort='-y', title=None),
         y=alt.Y('Jumlah:Q', title=None),
-        color=alt.Color('Kelurahan:N', legend=None, scale=alt.Scale(scheme='category20')),
+        color=alt.Color('Kelurahan:N', legend=None, scale=alt.Scale(scheme='category10')),
         tooltip=['Kelurahan', 'Jumlah']
     )
 
@@ -171,7 +171,7 @@ def persen_kategori(data):
 
     pie = alt.Chart(df).mark_arc(innerRadius=50).encode(
         theta=alt.Theta(field="Jumlah", type="quantitative"),
-        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category20b')),
+        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category10')),
         tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
     ).properties(
         width=300,
@@ -465,7 +465,7 @@ if uploaded_file is not None:
         ).encode(
             x=alt.X('Channel:N', sort='-y', title=None),
             y=alt.Y('Jumlah:Q', title=None),
-            color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='plasma')),
+            color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
             tooltip=['Channel', 'Jumlah']
         )
 

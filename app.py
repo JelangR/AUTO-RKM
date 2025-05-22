@@ -171,7 +171,7 @@ def persen_kategori(data):
 
     pie = alt.Chart(df).mark_arc(innerRadius=50).encode(
         theta=alt.Theta(field="Jumlah", type="quantitative"),
-        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='category10')),
+        color=alt.Color(field="Kategori", type="nominal", scale=alt.Scale(scheme='darkblue')),
         tooltip=['Kategori', 'Jumlah', alt.Tooltip('Persentase:Q', format='.1f')]
     ).properties(
         width=300,

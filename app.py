@@ -389,8 +389,10 @@ def top5Opd_keluhan_vis(data):
     width=600,
     height=300,
     title=f'Topik Keluhan - {instansi_terpilih}'
+    ).configure_axisY(
+        labelLimit=20,
     ).configure_axisX(
-        labelLimit=10,
+        labelLimit=0
     )
 
     st.altair_chart(chart, use_container_width=True)

@@ -1,6 +1,8 @@
 import streamlit as st
-import altair as alt
 import pandas as pd
+import altair as alt
+import seaborn as sns
+import matplotlib.pyplot as plt
 import time
 from io import BytesIO
 
@@ -356,8 +358,32 @@ def opdInfo_vis(data):
 
     st.altair_chart(chart, use_container_width=True)
     
+def top5Opd_keluhan_vis(data):
+    required_cols = {'Kategori','Status','Instansi'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+    top5Opd = data[list(required_cols)]
+    opd5 = top5Opd[
+        (top5Opd['Status'] == 'Selesai') &
+        (top5Opd['Kategori'] == 'Permohonan Informasi') &
+        (top5Opd['Instansi'].str.startswith('Dinas'))
+    ]
+    top_5 = opd5['Instansi'].value_counts().reset_index().head(5)
+    top_5.columns = ['Instansi', 'Jumlah']
 
-    
+    instansi_terpilih = st.selectbox("Pilih Instansi:", top_5['Instansi'].unique())
+    df_instansi = top_5[top_5['Instansi'] == instansi_terpilih]
+
+    sns.set(style="whitegrid")
+    plt.figure(figsize=(8, 4))
+    sns.barplot(data=df_instansi, x='Topik', y='Jumlah', palette='viridis')
+    plt.title(f'5 Topik Keluhan Terbanyak - {instansi_terpilih}')
+    plt.xlabel('Topik')
+    plt.ylabel('Jumlah')
+    plt.xticks(rotation=30)
+    plt.tight_layout()
+
+    st.pyplot(plt)
 #--------APP
 st.title("AUTO-RKM")
 st.markdown("""
@@ -469,6 +495,10 @@ if uploaded_file is not None:
         # Visualisasi OPD Keluhan terbanyak
         st.subheader('5 OPD Teratas yang Mendapatkan Keluhan')
         opd_vis(data)
+
+        # Visualisasi tiap opd yang mendapatkan keluhan terbanyak
+        st.subheader('Keluhan terhadap OPD')
+        top5Opd_keluhan_vis(data)
 
         #visualisasi tren permohonan informasi
         st.subheader('Jumlah Permohonan Informasi per Hari')

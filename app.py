@@ -358,7 +358,6 @@ def opdInfo_vis(data):
 
     st.altair_chart(chart, use_container_width=True)
     
-
 def top5Opd_keluhan_vis(data):
     required_cols = {'Kategori', 'Status', 'Instansi', 'Topik'}
     if not required_cols.issubset(data.columns):
@@ -370,25 +369,20 @@ def top5Opd_keluhan_vis(data):
         (data['Instansi'].str.startswith('Dinas'))
     ]
 
-    top_5_instansi = (
-        filtered['Instansi']
-        .value_counts()
-        .reset_index()
-        .rename(columns={'index': 'Instansi', 'Instansi': 'Jumlah'})
-        .head(5)
-    )
+    top_5_instansi = filtered['Instansi'].value_counts().reset_index().head(5)
+    top_5_instansi.columns = ['Instansi', 'Jumlah'] 
 
+    if top_5_instansi.empty:
+        st.warning("Tidak ada data yang memenuhi syarat untuk divisualisasikan.")
+        return
+
+    
     instansi_terpilih = st.selectbox("Pilih Instansi:", top_5_instansi['Instansi'])
-    data_instansi = filtered[filtered['Instansi'] == instansi_terpilih]
-    topik_count = (
-        data_instansi['Topik']
-        .value_counts()
-        .reset_index()
-        .rename(columns={'index': 'Topik', 'Topik': 'Jumlah'})
-        .head(5)
-    )
 
-    # Plot
+    data_instansi = filtered[filtered['Instansi'] == instansi_terpilih]
+    topik_count = data_instansi['Topik'].value_counts().reset_index().head(5)
+    topik_count.columns = ['Topik', 'Jumlah']
+
     sns.set(style="whitegrid")
     plt.figure(figsize=(8, 4))
     sns.barplot(data=topik_count, x='Topik', y='Jumlah', palette='viridis')

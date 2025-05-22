@@ -63,8 +63,8 @@ def vis_kecamatan(data):
         cornerRadiusTopLeft=5,
         cornerRadiusTopRight=5
     ).encode(
-        x=alt.X('Kategori:N', sort='-y', title='Kategori'),
-        y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
+        x=alt.X('Kategori:N', sort='-y', title=None),
+        y=alt.Y('Jumlah:Q', title=None),
         color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category20')),
         tooltip=['Kategori', 'Jumlah']
     )
@@ -121,8 +121,8 @@ def vis_kelurahan(data):
         cornerRadiusTopLeft=5,
         cornerRadiusTopRight=5
     ).encode(
-        x=alt.X('Kelurahan:N', sort='-y', title='Kelurahan'),
-        y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
+        x=alt.X('Kelurahan:N', sort='-y', title=None),
+        y=alt.Y('Jumlah:Q', title=None),
         color=alt.Color('Kelurahan:N', legend=None, scale=alt.Scale(scheme='category20')),
         tooltip=['Kelurahan', 'Jumlah']
     )
@@ -205,8 +205,8 @@ def tren_keluhan(data):
     rkm_tren.columns = ['Tanggal Keluhan', 'Jumlah']
 
     tren_chart = alt.Chart(rkm_tren).mark_line(point=True).encode(
-        x=alt.X('Tanggal Keluhan:T', title='Tanggal'),
-        y=alt.Y('Jumlah:Q', title='Jumlah Keluhan'),
+        x=alt.X('Tanggal Keluhan:T', title=None),
+        y=alt.Y('Jumlah:Q', title=None),
         tooltip=['Tanggal Keluhan:T', 'Jumlah']
     ).properties(
         width=700,
@@ -235,8 +235,8 @@ def tren_permohonan_info(data):
     rkm_tren_info.columns = ['Tanggal Keluhan', 'Jumlah']
 
     trenInfo_chart = alt.Chart(rkm_tren_info).mark_line(point=True).encode(
-        x=alt.X('Tanggal Keluhan:T', title='Tanggal'),
-        y=alt.Y('Jumlah:Q', title='Jumlah Permohonan Infomasi'),
+        x=alt.X('Tanggal Keluhan:T', title=None),
+        y=alt.Y('Jumlah:Q', title=None),
         tooltip=['Tanggal Keluhan:T', 'Jumlah']
     ).properties(
         width=700,
@@ -381,17 +381,23 @@ def top5Opd_keluhan_vis(data):
     topik_count = data_instansi['Topik'].value_counts().reset_index()
     topik_count.columns = ['Topik', 'Jumlah']
 
-    chart = alt.Chart(topik_count).mark_bar().encode(
-    x=alt.X('Jumlah:Q', title='Jumlah'),
-    y=alt.Y('Topik:N', sort='-x', title='Topik'),
-    color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='viridis'), legend=None)
+    bar = alt.Chart(topik_count).mark_bar().encode(
+        x=alt.X('Jumlah:Q', title=None),
+        y=alt.Y('Topik:N', sort='-x', title=None),
+        color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='viridis'), legend=None)
     ).properties(
-    width=600,
-    height=300,
-    title=f'Topik Keluhan - {instansi_terpilih}'
+        width=600,
+        height=300,
+        title=f'Topik Keluhan - {instansi_terpilih}'
     ).configure_axisY(
-    labelLimit=200
+        labelLimit=200
     )
+    text = bars.mark_text(
+        align='left',
+        baseline='middle',
+        dx=3
+    )
+    chart=bar+text
     st.altair_chart(chart, use_container_width=True)
 
 #--------APP
@@ -452,8 +458,8 @@ if uploaded_file is not None:
             cornerRadiusTopLeft=5,
             cornerRadiusTopRight=5
         ).encode(
-            x=alt.X('Channel:N', sort='-y', title='Jenis Media'),
-            y=alt.Y('Jumlah:Q', title='Jumlah'),
+            x=alt.X('Channel:N', sort='-y', title=None),
+            y=alt.Y('Jumlah:Q', title=None),
             color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
             tooltip=['Channel', 'Jumlah']
         )

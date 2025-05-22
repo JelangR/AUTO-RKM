@@ -363,7 +363,7 @@ def top5Opd_keluhan_vis(data):
 
     filtered = data[
         (data['Status'] == 'Selesai') &
-        (data['Kategori'] == 'Permohonan Informasi') &
+        (data['Kategori'] == 'Keluhan') &
         (data['Instansi'].str.startswith('Dinas'))
     ]
 
@@ -390,7 +390,7 @@ def top5Opd_keluhan_vis(data):
     height=300,
     title=f'Topik Keluhan - {instansi_terpilih}'
     ).configure_axisY(
-    labelLimit=150
+    labelLimit=200
     )
     st.altair_chart(chart, use_container_width=True)
 

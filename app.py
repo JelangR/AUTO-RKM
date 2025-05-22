@@ -384,7 +384,7 @@ def top5Opd_keluhan_vis(data):
     bar = alt.Chart(topik_count).mark_bar().encode(
         x=alt.X('Jumlah:Q', title=None),
         y=alt.Y('Topik:N', sort='-x', title=None),
-        color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='viridis'), legend=None)
+        color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='greenblue'), legend=None)
     ).properties(
         width=600,
         height=300,
@@ -465,7 +465,7 @@ if uploaded_file is not None:
         ).encode(
             x=alt.X('Channel:N', sort='-y', title=None),
             y=alt.Y('Jumlah:Q', title=None),
-            color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='category10')),
+            color=alt.Color('Channel:N', legend=None, scale=alt.Scale(scheme='plasma')),
             tooltip=['Channel', 'Jumlah']
         )
 

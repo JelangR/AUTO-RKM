@@ -1,8 +1,6 @@
 import streamlit as st
 import pandas as pd
 import altair as alt
-import seaborn as sns
-import matplotlib.pyplot as plt
 import time
 from io import BytesIO
 
@@ -383,16 +381,17 @@ def top5Opd_keluhan_vis(data):
     topik_count = data_instansi['Topik'].value_counts().reset_index().head(5)
     topik_count.columns = ['Topik', 'Jumlah']
 
-    sns.set(style="whitegrid")
-    plt.figure(figsize=(8, 4))
-    sns.barplot(data=topik_count, x='Topik', y='Jumlah', palette='viridis')
-    plt.title(f'5 Topik Terbanyak - {instansi_terpilih}')
-    plt.xlabel('Topik')
-    plt.ylabel('Jumlah')
-    plt.xticks(rotation=30)
-    plt.tight_layout()
+    chart = alt.Chart(topik_count).mark_bar().encode(
+    x=alt.X('Topik:N', sort='-y', axis=alt.Axis(labelAngle=30), title='Topik'),
+    y=alt.Y('Jumlah:Q', title='Jumlah'),
+    color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='viridis'), legend=None)
+    ).properties(
+    width=600,
+    height=300,
+    title=f'5 Topik Terbanyak - {instansi_terpilih}'
+    )
 
-    st.pyplot(plt)
+    st.altair_chart(chart, use_container_width=True)
 
 #--------APP
 st.title("AUTO-RKM")

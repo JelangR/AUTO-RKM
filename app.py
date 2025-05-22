@@ -392,7 +392,7 @@ def top5Opd_keluhan_vis(data):
     ).configure_axisY(
         labelLimit=200
     )
-    text = bars.mark_text(
+    text = bar.mark_text(
         align='left',
         baseline='middle',
         dx=3

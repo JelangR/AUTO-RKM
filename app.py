@@ -383,12 +383,14 @@ def top5Opd_keluhan_vis(data):
 
     chart = alt.Chart(topik_count).mark_bar().encode(
     x=alt.X('Jumlah:Q', title='Jumlah'),
-    y=alt.Y('Topik:N', sort='-x', axis=alt.Axis(labelAngle=30), title='Topik'),
+    y=alt.Y('Topik:N', sort='-x', title='Topik'),
     color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='viridis'), legend=None)
     ).properties(
     width=600,
     height=300,
     title=f'Topik Keluhan - {instansi_terpilih}'
+    ).configure_axisX(
+        labelLimit=10,
     )
 
     st.altair_chart(chart, use_container_width=True)

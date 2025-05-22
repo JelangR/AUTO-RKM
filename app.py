@@ -405,6 +405,54 @@ def top5Opd_keluhan_vis(data):
     )
     st.altair_chart(chart, use_container_width=True)
 
+def top5Opd_permohonanInfo_vis(data):
+    required_cols = {'Kategori', 'Status', 'Instansi', 'Topik'}
+    if not required_cols.issubset(data.columns):
+        raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
+
+    filtered = data[
+        (data['Status'] == 'Selesai') &
+        (data['Kategori'] == 'Permohonan Informasi') &
+        (data['Instansi'].str.startswith('Dinas'))
+    ]
+
+    top_5_instansi = filtered['Instansi'].value_counts().reset_index().head(5)
+    top_5_instansi.columns = ['Instansi', 'Jumlah'] 
+
+    if top_5_instansi.empty:
+        st.warning("Tidak ada data yang memenuhi syarat untuk divisualisasikan.")
+        return
+
+    
+    instansi_terpilih = st.selectbox("Pilih Instansi:", top_5_instansi['Instansi'])
+
+    data_instansi = filtered[filtered['Instansi'] == instansi_terpilih]
+    topik_count = data_instansi['Topik'].value_counts().reset_index()
+    topik_count.columns = ['Topik', 'Jumlah']
+
+    bar = alt.Chart(topik_count).mark_bar().encode(
+        x=alt.X('Jumlah:Q', title=None),
+        y=alt.Y('Topik:N', sort='-x', title=None),
+        color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='yellowgreen'), legend=None)
+    ).properties(
+        width=600,
+        height=300,
+        title=f'Topik Permohonan Informasi - {instansi_terpilih}'
+    )
+    text = bar.mark_text(
+        align='left',
+        baseline='middle',
+        dx=5,
+        color='white'
+    ).encode(
+        x=alt.X('Jumlah:Q'),
+        y=alt.Y('Topik:N', sort='-x'),
+        text='Jumlah:Q'
+    )
+    chart= (bar+text).configure_axisY(
+        labelLimit=200
+    )
+    st.altair_chart(chart, use_container_width=True)
 #--------APP
 st.title("AUTO-RKM")
 st.markdown("""
@@ -528,6 +576,10 @@ if uploaded_file is not None:
         # Visualisasi OPD Permohonan Info terbanyak
         st.subheader('5 OPD Teratas yang Mendapatkan Permohonan Informasi')
         opdInfo_vis(data)
+
+        # Visualisasi tiap opd yang mendapatkan permohonan Informasi terbanyak
+        st.subheader('Permohonan Informasi terhadap OPD')
+        top5Opd_permohonanInfo_vis(data)
         
     except ValueError as ve:
         st.error(f"Error: {ve}")

@@ -383,7 +383,7 @@ def top5Opd_keluhan_vis(data):
 
     bar = alt.Chart(topik_count).mark_bar().encode(
         x=alt.X('Jumlah:Q', title=None),
-        y=alt.Y('Topik:N', sort='-x', title=None, axis=alt.Axis(tickMinStep=1, format='d')),
+        y=alt.Y('Topik:N', sort='-x', title=None, axis=alt.Axis(format='d')),
         color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='greenblue'), legend=None)
     ).properties(
         width=600,
@@ -432,7 +432,7 @@ def top5Opd_permohonanInfo_vis(data):
 
     bar = alt.Chart(topik_count).mark_bar().encode(
         x=alt.X('Jumlah:Q', title=None),
-        y=alt.Y('Topik:N', sort='-x', title=None, axis=alt.Axis(tickMinStep=1, format='d')),
+        y=alt.Y('Topik:N', sort='-x', title=None, axis=alt.Axis(format='d')),
         color=alt.Color('Jumlah:Q', scale=alt.Scale(scheme='yellowgreen'), legend=None)
     ).properties(
         width=600,

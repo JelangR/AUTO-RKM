@@ -396,6 +396,8 @@ def top5Opd_keluhan_vis(data):
         align='left',
         baseline='middle',
         dx=3
+    ).encode(
+    text='Jumlah:Q'
     )
     chart=bar+text
     st.altair_chart(chart, use_container_width=True)

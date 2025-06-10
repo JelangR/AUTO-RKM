@@ -42,7 +42,7 @@ def AUTO_RKM(data):
     return rkm, kategori_keluhan
 
 def vis_kecamatan(data):
-    required_cols = {'Kategori','Status'}
+    required_cols = {'Kecamatan','Status'}
     if not required_cols.issubset(data.columns):
         raise ValueError(f"Tidak Dapat Melakukan Visualisasi Karena Tidak Terdapat Kolom: {required_cols}")
     
@@ -50,11 +50,11 @@ def vis_kecamatan(data):
     rkm_kategori = pd.DataFrame()
     selesai_kel = data_kategori[data_kategori['Status'] == 'Selesai']
 
-    rkm_kategori['Jumlah'] = selesai_kel['Kategori'].apply(
-        lambda x: len(selesai_kel[selesai_kel['Kategori'] == x])
+    rkm_kategori['Jumlah'] = selesai_kel['Kecamatan'].apply(
+        lambda x: len(selesai_kel[selesai_kel['Kecamatan'] == x])
     )
-    rkm_kategori = selesai_kel['Kategori'].value_counts().reset_index()
-    rkm_kategori.columns = ['Kategori', 'Jumlah']
+    rkm_kategori = selesai_kel['Kecamatan'].value_counts().reset_index()
+    rkm_kategori.columns = ['Kecamatan', 'Jumlah']
 
     rkm_kategori = rkm_kategori.sort_values(by='Jumlah', ascending=False).head(5)
 
@@ -63,7 +63,7 @@ def vis_kecamatan(data):
         cornerRadiusTopLeft=5,
         cornerRadiusTopRight=5
     ).encode(
-        x=alt.X('Kategori:N', sort='-y', title=None),
+        x=alt.X('Kecamatan:N', sort='-y', title=None),
         y=alt.Y('Jumlah:Q', title=None),
         color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category10')),
         tooltip=['Kategori', 'Jumlah']
@@ -77,7 +77,7 @@ def vis_kecamatan(data):
         fontSize=12,
         color='white'
     ).encode(
-        x=alt.X('Kategori:N', sort='-y'),
+        x=alt.X('Kecamatan:N', sort='-y'),
         y='Jumlah:Q',
         text='Jumlah:Q'
     )

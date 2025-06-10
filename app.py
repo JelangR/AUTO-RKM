@@ -255,7 +255,6 @@ def opd_vis(data):
     
     opd_keluhan = data[list(required_cols)]
     selesai_opd = opd_keluhan[
-        (opd_keluhan['Status'] == 'Selesai') &
         (opd_keluhan['Kategori'] == 'Keluhan') &
         (opd_keluhan['Instansi'].str.startswith('Dinas'))
     ]

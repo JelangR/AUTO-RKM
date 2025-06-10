@@ -65,8 +65,8 @@ def vis_kecamatan(data):
     ).encode(
         x=alt.X('Kecamatan:N', sort='-y', title=None),
         y=alt.Y('Jumlah:Q', title=None),
-        color=alt.Color('Kategori:N', legend=None, scale=alt.Scale(scheme='category10')),
-        tooltip=['Kategori', 'Jumlah']
+        color=alt.Color('Kecamatan:N', legend=None, scale=alt.Scale(scheme='category10')),
+        tooltip=['Kecamatan', 'Jumlah']
     )
 
     # Label jumlah
